@@ -71,11 +71,48 @@ class WebDriver:
 
 
 
-            print(names)
-            print(ratings)
+            #print(names)
+            #print(ratings)
+
+            b_type = []
+            address = []
+            elements = self.driver.find_elements_by_xpath("//div[@class='tYZdQJV9xeh__info-line' and @jsinstance='0']")
+            for element in elements:
+                string = element.text
+                if string.find("·") == -1:
+                    b_type.append(string)
+                    address.append(" ")
+                else:
+                    parts = string.split("·")
+                    b_type.append(parts[0])
+                    address.append(parts[1])
+            contact_no = []
+            elements = self.driver.find_elements_by_xpath("//div[@class='tYZdQJV9xeh__info-line' and @jsinstance='*1']")
+            for element in elements:
+                string = element.text
+                if string.find("·") == -1:
+                    contact_no.append(string)
+                else:
+                    parts = string.split("·")
+                    contact_no.append(parts[1])
+
+            #print(b_type)
+            #print(address)
+            #print(contact_no)
+
+            keys = ["name", "rating", "business type", "address", "contact_no"]
+            objects = []
+
+            for entry in zip(names, ratings, b_type, address, contact_no):
+                dic = dict(zip(keys, entry))
+                objects.append(dic)
+            print(objects)
+
+            #print(objects)
+
 
             #for(i=0;i<names.length();i++);
-            agri = names, ratings
+            agri = objects
 
             @app.route('/', methods=['GET'])
             def hello_world():
